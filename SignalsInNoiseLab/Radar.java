@@ -11,7 +11,7 @@ public class Radar
     // stores whether each cell triggered detection for the current scan of the radar
     private boolean[][] currentScan;
     
-    // value of each cell is incremented for each scan in which that cell triggers detection 
+    // volocity and number of times it occurs
     private int[][] accumulator;
     
     // location of the monster
@@ -34,12 +34,14 @@ public class Radar
     {
         // initialize instance variables
         currentScan = new boolean[rows][cols]; // elements will be set to false
-        accumulator = new int[rows][cols]; // elements will be set to 0
+        accumulator = new int[11][11]; // elements will be set to 0
+
         
         // randomly set the location of the monster (can be explicity set through the
         //  setMonsterLocation method
         monsterLocationRow = (int)(Math.random() * rows);
         monsterLocationCol = (int)(Math.random() * cols);
+        
         
         noiseFraction = 0.05;
         numScans= 0;
@@ -71,6 +73,9 @@ public class Radar
         {
             for(int col = 0; col < currentScan[0].length; col++)
             {
+                for(int r = 0; r<currentScan[0].length;r++)
+                {
+                    for(int c = 0; c
                 if(currentScan[row][col] == true)
                 {
                    accumulator[row][col]++;
