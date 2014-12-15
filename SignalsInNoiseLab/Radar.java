@@ -73,19 +73,24 @@ public class Radar
         {
             for(int col = 0; col < currentScan[0].length; col++)
             {
-                for(int r = 0; r<currentScan[0].length;r++)
+                for(int r = 0; r<currentScan.length;r++)
                 {
-                    for(int c = 0; c
-                if(currentScan[row][col] == true)
-                {
-                   accumulator[row][col]++;
+                    for(int c = 0; c<currentScan[0].length;c++)
+                    {
+                        if(currentScan[row][col] == true)
+                        {
+                            accumulator[row][col]++;
+                        }
+                    }
                 }
             }
         }
-        
+
         // keep track of the total number of scans
         numScans++;
     }
+    
+    
 
     /**
      * Sets the location of the monster
@@ -189,5 +194,5 @@ public class Radar
             }
         }
     }
-    
 }
+    
