@@ -13,10 +13,17 @@ public class Radar
     
     // volocity and number of times it occurs
     private int[][] accumulator;
+    private int[][] newAccumulator;
     
     // location of the monster
     private int monsterLocationRow;
     private int monsterLocationCol;
+    private int currentLocationRow;
+    private int currentLocationCol;
+    
+    // how much the monster moves
+    private int monsterDX;
+    private int monsterDY;
 
     // probability that a cell will trigger a false detection (must be >= 0 and < 1)
     private double noiseFraction;
@@ -34,14 +41,16 @@ public class Radar
     {
         // initialize instance variables
         currentScan = new boolean[rows][cols]; // elements will be set to false
-        accumulator = new int[11][11]; // elements will be set to 0
+        newAccumulator = new int[11][11]; // elements will be set to 0
+        accumulator = new int[11][11]; // this holds the totals
 
         
         // randomly set the location of the monster (can be explicity set through the
         //  setMonsterLocation method
         monsterLocationRow = (int)(Math.random() * rows);
         monsterLocationCol = (int)(Math.random() * cols);
-        
+        currentLocationRow = monsterLocationRow;
+        currentLocationCol = monsterLocationCol;
         
         noiseFraction = 0.05;
         numScans= 0;
@@ -53,6 +62,15 @@ public class Radar
      */
     public void scan()
     {
+        //adds the old accumulator to the total
+        for(int row = 0; row<currentScan.length;row++)
+        {
+            for(int col = 0; col<currentScan[0].length;col++)
+            {
+                accumulator[row][col] += newAccumulator[row][col];
+            }
+        }
+        
         // zero the current scan grid
         for(int row = 0; row < currentScan.length; row++)
         {
@@ -63,7 +81,9 @@ public class Radar
         }
         
         // detect the monster
-        currentScan[monsterLocationRow][monsterLocationCol] = true;
+        currentLocationRow += monsterDX;
+        currentLocationCol += monsterDY;
+        currentScan[currentLocationRow][currentLocationCol] = true;
         
         // inject noise into the grid
         injectNoise();
@@ -108,6 +128,7 @@ public class Radar
         // update the radar grid to show that something was detected at the specified location
         currentScan[row][col] = true;
     }
+    
     
      /**
      * Sets the probability that a given cell will generate a false detection
@@ -194,5 +215,34 @@ public class Radar
             }
         }
     }
+    
+    /**
+     * An example of a method - replace this comment with your own
+     *
+     * @param  y   a sample parameter for a method
+     * @return     the sum of x and y
+     */
+    public int slope()
+    {
+        int biggestSlope = 0;
+        int[] mSlope;
+        mSlope = new int[2];
+        for(int row = 0; row < accumulator.length; row++)
+        {
+            for(int col = 0; col < accumulator[0].length; col++)
+            {
+                if(accumulator[row][col] > biggestSlope)
+                {
+                    biggestSlope = accumulator[row][col];
+                    mSlope[0] = (row -5);
+                    mSlope[1] = (col - 5);
+                }
+            }
+        }
+        System.out.println(mSlope[0]);
+        System.out.println(mSlope[1]);
+        return mSlope[];
+    }
+
 }
     
